@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { getSupabaseClient } from "@/lib/supabase/client"
+import { getSupabaseServer } from "@/lib/supabase/server"
 import { CheckCircle, AlertCircle } from "lucide-react"
 
 interface SettingsFormProps {
@@ -38,7 +38,7 @@ export function SettingsForm({ user, onUpdate }: SettingsFormProps) {
     setStatus("idle")
 
     try {
-      const supabase = getSupabaseClient()
+      const supabase = await getSupabaseServer()
 
       const { error } = await supabase
         .from("users")

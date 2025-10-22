@@ -314,7 +314,7 @@ This invitation was sent from the Academic eRecord Platform
 // GET endpoint to check invitation status
 export async function GET(request: NextRequest) {
   try {
-    const supabase = getSupabaseClient()
+    const supabase = await getSupabaseServer()
     const { searchParams } = new URL(request.url)
     const token = searchParams.get("token")
 
