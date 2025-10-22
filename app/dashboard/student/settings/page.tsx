@@ -6,7 +6,7 @@ import { DashboardNav } from "@/components/dashboard-nav"
 import { SettingsForm } from "@/components/settings-form"
 import { NotificationPreferences } from "@/components/notification-preferences"
 import { useAuth } from "@/lib/auth-context"
-import { getSupabaseClient } from "@/lib/supabase/client"
+import { getSupabaseClient } from "@/app/lib/superbase/superbase/client"
 
 export default function SettingsPage() {
   const router = useRouter()

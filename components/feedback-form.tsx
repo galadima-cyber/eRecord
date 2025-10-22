@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Star, Send, AlertCircle, CheckCircle } from "lucide-react"
-import { getSupabaseClient } from "@/lib/supabase/client"
+import { getSupabaseClient } from "@/app/lib/superbase/superbase/client"
 
 export function FeedbackForm() {
   const [subject, setSubject] = useState("")

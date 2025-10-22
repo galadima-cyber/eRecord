@@ -6,7 +6,7 @@ import { DashboardNav } from "@/components/dashboard-nav"
 import { AdminStats } from "@/components/admin-stats"
 import { AttendanceChart } from "@/components/attendance-chart"
 import { useAuth } from "@/lib/auth-context"
-import { getSupabaseClient } from "@/lib/supabase/client"
+import { getSupabaseClient } from "@/app/lib/superbase/superbase/client"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function AnalyticsPage() {

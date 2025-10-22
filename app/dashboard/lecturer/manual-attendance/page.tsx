@@ -6,7 +6,7 @@ import { DashboardNav } from "@/components/dashboard-nav"
 import { ManualAttendanceTable } from "@/components/manual-attendance-table"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { getSupabaseClient } from "@/lib/supabase/client"
+import { getSupabaseClient } from "@/app/lib/superbase/superbase/client"
 import { useAuth } from "@/lib/auth-context"
 
 interface Session {

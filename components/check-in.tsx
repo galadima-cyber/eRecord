@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/lib/auth-context'
-import { getSupabaseClient } from '@/lib/supabase/client'
+import { getSupabaseClient } from '@/app/lib/superbase/superbase/client'
 import { SimpleMap } from '@/components/simple-map'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'

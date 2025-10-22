@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, CheckCircle, AlertCircle, Mail, User, GraduationCap } from "lucide-react"
-import { getSupabaseClient } from "@/lib/supabase/client"
+import { getSupabaseClient } from "@/app/lib/superbase/superbase/client"
 import { toast } from "sonner"
 
 interface InvitationData {

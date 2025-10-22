@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { DashboardNav } from "@/components/dashboard-nav"
 import { NotificationsList } from "@/components/notifications-list"
 import { useAuth } from "@/lib/auth-context"
-import { getSupabaseClient } from "@/lib/supabase/client"
+import { getSupabaseClient } from "@/app/lib/superbase/superbase/client"
 
 export default function NotificationsPage() {
   const router = useRouter()

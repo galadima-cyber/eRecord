@@ -6,7 +6,7 @@ import { DashboardNav } from "@/components/dashboard-nav"
 import { StudentStats } from "@/components/student-stats"
 import { ActiveSessions } from "@/components/active-sessions"
 import { useAuth } from "@/lib/auth-context"
-import { getSupabaseClient } from "@/lib/supabase/client"
+import { getSupabaseClient } from "@/app/lib/superbase/superbase/client"
 
 export default function StudentDashboard() {
   const router = useRouter()

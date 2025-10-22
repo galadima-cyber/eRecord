@@ -1,4 +1,4 @@
-import { getSupabaseClient } from "./supabase/client"
+import { getSupabaseClient } from "../app/lib/superbase/superbase/client"
 import { calculateDistance, isWithinGeofence } from "./location-utils"
 
 export interface LocationVerificationResult {

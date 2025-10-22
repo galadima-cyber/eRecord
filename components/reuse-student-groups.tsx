@@ -17,7 +17,7 @@ import {
   BookOpen,
   UserPlus
 } from "lucide-react"
-import { getSupabaseClient } from "@/lib/supabase/client"
+import { getSupabaseClient } from "@/app/lib/superbase/superbase/client"
 import { toast } from "sonner"
 
 interface Course {

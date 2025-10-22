@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { DashboardNav } from "@/components/dashboard-nav"
 import { UsersTable } from "@/components/users-table"
 import { useAuth } from "@/lib/auth-context"
-import { getSupabaseClient } from "@/lib/supabase/client"
+import { getSupabaseClient } from "@/app/lib/superbase/superbase/client"
 import { Button } from "@/components/ui/button"
 import { UserPlus } from "lucide-react"
 

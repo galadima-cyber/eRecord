@@ -6,7 +6,7 @@ import { DashboardNav } from "@/components/dashboard-nav"
 import { AttendanceChart, AttendanceDistribution } from "@/components/attendance-chart"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useAuth } from "@/lib/auth-context"
-import { getSupabaseClient } from "@/lib/supabase/client"
+import { getSupabaseClient } from "@/app/lib/superbase/superbase/client"
 
 export default function LecturerReportsPage() {
   const router = useRouter()

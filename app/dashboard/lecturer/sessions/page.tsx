@@ -6,7 +6,7 @@ import { DashboardNav } from "@/components/dashboard-nav"
 import { LecturerSessions } from "@/components/lecturer-sessions"
 import { CreateSessionForm } from "@/components/create-session-form"
 import { useAuth } from "@/lib/auth-context"
-import { getSupabaseClient } from "@/lib/supabase/client"
+import { getSupabaseClient } from "@/app/lib/superbase/superbase/client"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function SessionsPage() {

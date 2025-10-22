@@ -4,7 +4,7 @@ import type React from "react"
 
 import { createContext, useContext, useEffect, useState } from "react"
 import type { User, Session, AuthChangeEvent } from "@supabase/supabase-js"
-import { getSupabaseClient } from "./supabase/client"
+import { getSupabaseClient } from "../app/lib/superbase/superbase/client"
 
 interface AuthContextType {
   user: User | null

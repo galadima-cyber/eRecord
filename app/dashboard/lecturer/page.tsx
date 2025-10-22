@@ -7,7 +7,7 @@ import { LecturerStats } from "@/components/lecturer-stats"
 import { CreateSessionForm } from "@/components/create-session-form"
 import { LecturerSessions } from "@/components/lecturer-sessions"
 import { useAuth } from "@/lib/auth-context"
-import { getSupabaseClient } from "@/lib/supabase/client"
+import { getSupabaseClient } from "@/app/lib/superbase/superbase/client"
 
 export default function LecturerDashboard() {
   const router = useRouter()
