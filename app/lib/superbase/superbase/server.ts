@@ -1,3 +1,5 @@
+'use server'
+
 import { createServerClient } from "@supabase/ssr"
 import { cookies } from "next/headers"
 
@@ -5,6 +7,7 @@ let supabaseServer: ReturnType<typeof createServerClient> | null = null
 
 export async function getSupabaseServer() {
   if (!supabaseServer) {
+    // cookies() is synchronous in the App Router server runtime
     const cookieStore = await cookies()
     supabaseServer = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -16,7 +19,9 @@ export async function getSupabaseServer() {
           },
           setAll(cookiesToSet) {
             try {
-              cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
+              cookiesToSet.forEach(({ name, value, options }) =>
+                cookieStore.set(name, value, options),
+              )
             } catch {
               // Handle cookie setting errors
             }
