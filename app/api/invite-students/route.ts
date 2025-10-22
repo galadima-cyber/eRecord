@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getSupabaseServer } from "@/lib/supabase/server";
+import { getSupabaseServer } from "@/app/lib/superbase/superbase/server";
 import { Resend } from "resend"
 import { StudentData } from "@/components/file-upload"
 

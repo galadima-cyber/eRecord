@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { getSupabaseServer } from "@/lib/supabase/server"
+import { getSupabaseServer } from "@/app/lib/superbase/superbase/server"
 import { CheckCircle, AlertCircle } from "lucide-react"
 
 interface SettingsFormProps {
