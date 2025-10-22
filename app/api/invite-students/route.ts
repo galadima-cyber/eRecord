@@ -19,7 +19,7 @@ interface InviteResult {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = getSupabaseServer();
+    const supabase = await getSupabaseServer();
 
     
     // Get the current user
