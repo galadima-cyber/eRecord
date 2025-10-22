@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getSupabaseClient } from "@/lib/supabase/server"
+import { getSupabaseServer } from "@/lib/supabase/server";
 import { Resend } from "resend"
 import { StudentData } from "@/components/file-upload"
 
@@ -19,7 +19,8 @@ interface InviteResult {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = getSupabaseClient()
+    const supabase = getSupabaseServer();
+
     
     // Get the current user
     const { data: { user }, error: authError } = await supabase.auth.getUser()
