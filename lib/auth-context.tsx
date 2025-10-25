@@ -6,9 +6,11 @@ import { createContext, useContext, useEffect, useState } from "react"
 import type { User, Session, AuthChangeEvent } from "@supabase/supabase-js"
 import { getSupabaseClient } from "../app/lib/superbase/superbase/client"
 
+export type UserRole = "student" | "lecturer" | "admin"
+
 interface AuthContextType {
   user: User | null
-  userRole: string | null
+  userRole: UserRole | null
   isLoading: boolean
   signOut: () => Promise<void>
 }
@@ -17,10 +19,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
-  const [userRole, setUserRole] = useState<string | null>(null)
+  const [userRole, setUserRole] = useState<UserRole | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  const fetchUserRole = async (userId: string) => {
+  const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
     try {
       const supabase = getSupabaseClient()
       console.log("[Auth] Fetching user role for:", userId)
@@ -34,7 +36,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           console.log("[Auth] User profile not found, defaulting to student role")
           setUserRole("student")
           setIsLoading(false)
-          return "student"
+          return "student" as const
         }
         setIsLoading(false)
         return null
@@ -43,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.log("[Auth] User role fetched:", userData?.role)
       setUserRole(userData?.role ?? "student")
       setIsLoading(false)
-      return userData?.role ?? "student"
+return (userData?.role as UserRole) ?? "student"
     } catch (error) {
       console.error("[Auth] Exception fetching user role:", error)
       setIsLoading(false)

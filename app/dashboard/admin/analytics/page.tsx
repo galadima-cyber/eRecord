@@ -9,6 +9,14 @@ import { useAuth } from "@/lib/auth-context"
 import { getSupabaseClient } from "@/app/lib/superbase/superbase/client"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
+interface User {
+  id: string
+  email: string
+  fullName: string
+  role: string
+  createdAt: string
+}
+
 export default function AnalyticsPage() {
   const router = useRouter()
   const { user, isLoading } = useAuth()
@@ -18,6 +26,17 @@ export default function AnalyticsPage() {
     totalLecturers: 0,
     totalSessions: 0,
   })
+  
+  // Sample attendance data - replace this with your actual data from the database
+  const [attendanceData] = useState([
+    { name: 'Mon', present: 20, absent: 5, late: 3 },
+    { name: 'Tue', present: 35, absent: 2, late: 1 },
+    { name: 'Wed', present: 25, absent: 3, late: 2 },
+    { name: 'Thu', present: 40, absent: 1, late: 0 },
+    { name: 'Fri', present: 30, absent: 4, late: 2 },
+    { name: 'Sat', present: 15, absent: 0, late: 1 },
+    { name: 'Sun', present: 10, absent: 2, late: 1 },
+  ])
   const [dataLoading, setDataLoading] = useState(true)
 
   useEffect(() => {
@@ -40,8 +59,8 @@ export default function AnalyticsPage() {
       const { data: allSessions } = await supabase.from("attendance_sessions").select("id")
 
       const totalUsers = allUsers?.length || 0
-      const totalStudents = allUsers?.filter((u) => u.role === "student").length || 0
-      const totalLecturers = allUsers?.filter((u) => u.role === "lecturer").length || 0
+      const totalStudents = allUsers?.filter((u: User) => u.role === "student").length || 0
+      const totalLecturers = allUsers?.filter((u: User) => u.role === "lecturer").length || 0
       const totalSessions = allSessions?.length || 0
 
       setStats({
@@ -85,7 +104,7 @@ export default function AnalyticsPage() {
                 <CardDescription>Overall attendance patterns</CardDescription>
               </CardHeader>
               <CardContent>
-                <AttendanceChart />
+                <AttendanceChart data={attendanceData} />
               </CardContent>
             </Card>
 

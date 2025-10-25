@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Download, Filter } from "lucide-react"
 
-interface AttendanceRecord {
+export interface AttendanceRecord {
   id: string
   courseName: string
   courseCode: string

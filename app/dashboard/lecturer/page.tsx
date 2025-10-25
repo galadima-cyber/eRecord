@@ -3,6 +3,12 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { DashboardNav } from "@/components/dashboard-nav"
+
+interface Session {
+  id: string
+  status: string
+  [key: string]: any  // For other properties we might need
+}
 import { LecturerStats } from "@/components/lecturer-stats"
 import { CreateSessionForm } from "@/components/create-session-form"
 import { LecturerSessions } from "@/components/lecturer-sessions"
@@ -45,15 +51,21 @@ export default function LecturerDashboard() {
         .order("session_date", { ascending: false })
 
       const totalSessions = lecturerSessions?.length || 0
-      const activeSessions = lecturerSessions?.filter((s) => s.status === "active").length || 0
+      const activeSessions = lecturerSessions?.filter((s: Session) => s.status === "active").length || 0
 
       // Fetch attendance records for average calculation
       const { data: records } = await supabase
         .from("attendance_records")
         .select("status, session_id")
-        .in("session_id", lecturerSessions?.map((s) => s.id) || [])
+        .in("session_id", lecturerSessions?.map((s: Session) => s.id) || [])
 
-      const presentCount = records?.filter((r) => r.status === "present").length || 0
+      interface AttendanceRecord {
+        status: string;
+        session_id: string;
+        [key: string]: any; // For any additional fields that might exist
+      }
+      
+      const presentCount = records?.filter((r: AttendanceRecord) => r.status === "present").length || 0
       const totalRecords = records?.length || 0
       const averageAttendance = totalRecords > 0 ? Math.round((presentCount / totalRecords) * 100) : 0
 
@@ -65,7 +77,16 @@ export default function LecturerDashboard() {
       })
 
       setSessions(
-        lecturerSessions?.map((s) => ({
+        lecturerSessions?.map((s: {
+          id: string;
+          course_code: string;
+          course_name: string;
+          session_date: string;
+          start_time: string;
+          end_time: string;
+          location: string;
+          status: string;
+        }) => ({
           id: s.id,
           courseCode: s.course_code,
           courseName: s.course_name,

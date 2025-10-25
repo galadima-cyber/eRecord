@@ -4,6 +4,12 @@ import { useEffect, useRef } from "react"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 
+declare global {
+  interface HTMLElement {
+    _leaflet_id?: number | null;
+  }
+}
+
 interface LeafletMapProps {
   center: [number, number]
   zoom?: number

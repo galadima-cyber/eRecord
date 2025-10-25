@@ -11,9 +11,9 @@ import { getSupabaseClient } from "@/app/lib/superbase/superbase/client"
 interface User {
   id: string
   email: string
-  full_name: string
+  fullName: string
   role: string
-  created_at: string
+  createdAt: string
 }
 
 export default function AdminDashboard() {
@@ -48,8 +48,8 @@ export default function AdminDashboard() {
       const { data: allUsers } = await supabase.from("users").select("*").order("created_at", { ascending: false })
 
       const totalUsers = allUsers?.length || 0
-      const totalStudents = allUsers?.filter((u) => u.role === "student").length || 0
-      const totalLecturers = allUsers?.filter((u) => u.role === "lecturer").length || 0
+      const totalStudents = allUsers?.filter((u: User) => u.role === "student").length || 0
+      const totalLecturers = allUsers?.filter((u: User) => u.role === "lecturer").length || 0
 
       // Fetch all sessions
       const { data: allSessions } = await supabase.from("attendance_sessions").select("id")
@@ -114,9 +114,9 @@ export default function AdminDashboard() {
             users={users.map((u) => ({
               id: u.id,
               email: u.email,
-              fullName: u.full_name,
+              fullName: u.fullName,
               role: u.role,
-              createdAt: u.created_at,
+              createdAt: u.createdAt,
             }))}
             onEdit={handleEditUser}
             onDelete={handleDeleteUser}

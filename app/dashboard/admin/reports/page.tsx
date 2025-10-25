@@ -3,13 +3,22 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { DashboardNav } from "@/components/dashboard-nav"
-import { AttendanceReport } from "@/components/attendance-report"
+import { AttendanceRecord, AttendanceReport } from "@/components/attendance-report"
 import { useAuth } from "@/lib/auth-context"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Download, FileText } from "lucide-react"
 
 export default function AdminReportsPage() {
+  const [attendanceRecords, setAttendanceRecords] = useState<AttendanceRecord[]>([]);
+  const [exportRecords, setExportRecords] = useState<AttendanceRecord[]>([]);
+
+  const handleExport = () => {
+    // TODO: Implement export functionality
+    // This could be a CSV export, PDF generation, etc.
+    console.log('Exporting records:', attendanceRecords);
+  };
+
   const router = useRouter()
   const { user, isLoading } = useAuth()
 
@@ -84,7 +93,10 @@ export default function AdminReportsPage() {
             </Card>
           </div>
 
-          <AttendanceReport />
+          <AttendanceReport 
+            records={attendanceRecords} 
+            onExport={handleExport} 
+          />
         </div>
       </main>
     </div>

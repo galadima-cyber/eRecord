@@ -9,7 +9,7 @@ interface NotificationPreferencesProps {
     sessionReminders: boolean
     attendanceAlerts: boolean
   }
-  onToggle: (key: string) => void
+  onToggle: (key: keyof NotificationPreferencesProps['preferences']) => void
 }
 
 export function NotificationPreferences({ preferences, onToggle }: NotificationPreferencesProps) {

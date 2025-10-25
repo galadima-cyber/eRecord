@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { DashboardNav } from "@/components/dashboard-nav"
 import { AttendanceChart, AttendanceDistribution } from "@/components/attendance-chart"
@@ -8,41 +8,69 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useAuth } from "@/lib/auth-context"
 import { getSupabaseClient } from "@/app/lib/superbase/superbase/client"
 
+interface ChartDataPoint {
+  name: string
+  present: number
+  absent: number
+  late: number
+}
+
+interface AttendanceDistribution {
+  present: number
+  absent: number
+  late: number
+}
+
 export default function LecturerReportsPage() {
   const router = useRouter()
   const { user, isLoading } = useAuth()
-  const [chartData, setChartData] = useState([])
-  const [distribution, setDistribution] = useState({ present: 0, absent: 0, late: 0 })
+  const [chartData, setChartData] = useState<ChartDataPoint[]>([])
+  const [distribution, setDistribution] = useState<AttendanceDistribution>({ present: 0, absent: 0, late: 0 })
   const [dataLoading, setDataLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (!isLoading && !user) {
-      router.push("/")
-    }
-  }, [user, isLoading, router])
-
-  useEffect(() => {
-    if (user) {
-      loadReportData()
-    }
-  }, [user])
-
-  const loadReportData = async () => {
+  const loadReportData = useCallback(async () => {
+    if (!user?.id) return
+    
+    setDataLoading(true)
     const supabase = getSupabaseClient()
 
     try {
       // Fetch lecturer's sessions
-      const { data: sessions } = await supabase.from("attendance_sessions").select("id").eq("lecturer_id", user?.id)
+      const { data: sessions, error: sessionsError } = await supabase
+        .from("attendance_sessions")
+        .select("id")
+        .eq("lecturer_id", user.id)
 
-      const sessionIds = sessions?.map((s) => s.id) || []
+      if (sessionsError) throw sessionsError
+      if (!sessions?.length) {
+        setChartData([])
+        setDistribution({ present: 0, absent: 0, late: 0 })
+        return
+      }
+
+      const sessionIds = sessions.map((s: { id: string }) => s.id)
 
       // Fetch attendance records for these sessions
-      const { data: records } = await supabase.from("attendance_records").select("*").in("session_id", sessionIds)
+      const { data: records, error: recordsError } = await supabase
+        .from("attendance_records")
+        .select("*")
+        .in("session_id", sessionIds)
+
+      if (recordsError) throw recordsError
 
       // Calculate distribution
-      const present = records?.filter((r) => r.status === "present").length || 0
-      const absent = records?.filter((r) => r.status === "absent").length || 0
-      const late = records?.filter((r) => r.status === "late").length || 0
+      interface AttendanceRecord {
+        id: string;
+        session_id: string;
+        status: 'present' | 'absent' | 'late';
+        created_at: string;
+        [key: string]: any;
+      }
+
+      const present = records?.filter((r: AttendanceRecord) => r.status === "present").length || 0
+      const absent = records?.filter((r: AttendanceRecord) => r.status === "absent").length || 0
+      const late = records?.filter((r: AttendanceRecord) => r.status === "late").length || 0
 
       setDistribution({ present, absent, late })
 
@@ -54,27 +82,49 @@ export default function LecturerReportsPage() {
       })
 
       const chartDataPoints = last7Days.map((date) => {
-        const dayRecords = records?.filter((r) => r.created_at?.startsWith(date)) || []
+        const dayRecords = records?.filter((r: AttendanceRecord) => r.created_at?.startsWith(date)) || []
         return {
           name: new Date(date).toLocaleDateString("en-US", { weekday: "short" }),
-          present: dayRecords.filter((r) => r.status === "present").length,
-          absent: dayRecords.filter((r) => r.status === "absent").length,
-          late: dayRecords.filter((r) => r.status === "late").length,
+          present: dayRecords.filter((r: AttendanceRecord) => r.status === "present").length,
+          absent: dayRecords.filter((r: AttendanceRecord) => r.status === "absent").length,
+          late: dayRecords.filter((r: AttendanceRecord) => r.status === "late").length,
         }
       })
 
       setChartData(chartDataPoints)
+      setError(null)
     } catch (error) {
       console.error("Error loading report data:", error)
+      setError("Failed to load report data. Please try again later.")
+      setChartData([])
+      setDistribution({ present: 0, absent: 0, late: 0 })
     } finally {
       setDataLoading(false)
     }
-  }
+  }, [user?.id])
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push("/")
+    }
+  }, [user, isLoading, router])
+
+  useEffect(() => {
+    loadReportData()
+  }, [loadReportData])
 
   if (isLoading || dataLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p className="text-muted-foreground">Loading...</p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-destructive">{error}</p>
       </div>
     )
   }

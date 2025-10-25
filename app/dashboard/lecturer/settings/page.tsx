@@ -12,7 +12,13 @@ export default function LecturerSettingsPage() {
   const router = useRouter()
   const { user, isLoading } = useAuth()
   const [userData, setUserData] = useState<any>(null)
-  const [preferences, setPreferences] = useState({
+  type Preferences = {
+    emailNotifications: boolean;
+    sessionReminders: boolean;
+    attendanceAlerts: boolean;
+  };
+
+  const [preferences, setPreferences] = useState<Preferences>({
     emailNotifications: true,
     sessionReminders: true,
     attendanceAlerts: true,
@@ -51,7 +57,7 @@ export default function LecturerSettingsPage() {
     }
   }
 
-  const handleTogglePreference = (key: string) => {
+  const handleTogglePreference = (key: keyof Preferences) => {
     setPreferences((prev) => ({
       ...prev,
       [key]: !prev[key],

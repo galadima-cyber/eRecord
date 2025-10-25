@@ -104,6 +104,24 @@ ${colorConfig
 
 const ChartTooltip = RechartsPrimitive.Tooltip
 
+type TooltipProps = React.ComponentProps<typeof RechartsPrimitive.Tooltip>;
+
+interface ChartTooltipContentProps extends Omit<TooltipProps, 'formatter' | 'labelFormatter' | 'content'> {
+  hideLabel?: boolean;
+  hideIndicator?: boolean;
+  indicator?: 'line' | 'dot' | 'dashed';
+  nameKey?: string;
+  labelKey?: string;
+  className?: string;
+  labelClassName?: string;
+  formatter?: (value: any, name: string, props: any, index?: number, payload?: any) => React.ReactNode;
+  labelFormatter?: (label: any, payload: any[]) => React.ReactNode;
+  payload?: any[];
+  active?: boolean;
+  label?: any;
+  color?: string;
+}
+
 function ChartTooltipContent({
   active,
   payload,
@@ -118,14 +136,7 @@ function ChartTooltipContent({
   color,
   nameKey,
   labelKey,
-}: React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
-  React.ComponentProps<'div'> & {
-    hideLabel?: boolean
-    hideIndicator?: boolean
-    indicator?: 'line' | 'dot' | 'dashed'
-    nameKey?: string
-    labelKey?: string
-  }) {
+}: ChartTooltipContentProps) {
   const { config } = useChart()
 
   const tooltipLabel = React.useMemo(() => {
@@ -250,17 +261,29 @@ function ChartTooltipContent({
 
 const ChartLegend = RechartsPrimitive.Legend
 
+type LegendProps = React.ComponentProps<typeof RechartsPrimitive.Legend>;
+
+interface ChartLegendContentProps extends React.ComponentProps<'div'> {
+  hideIcon?: boolean;
+  nameKey?: string;
+  payload?: Array<{
+    value: any;
+    id: string;
+    type?: string;
+    color?: string;
+    dataKey?: string | number;
+    [key: string]: any;
+  }>;
+  verticalAlign?: 'top' | 'middle' | 'bottom';
+}
+
 function ChartLegendContent({
   className,
   hideIcon = false,
   payload,
   verticalAlign = 'bottom',
   nameKey,
-}: React.ComponentProps<'div'> &
-  Pick<RechartsPrimitive.LegendProps, 'payload' | 'verticalAlign'> & {
-    hideIcon?: boolean
-    nameKey?: string
-  }) {
+}: ChartLegendContentProps) {
   const { config } = useChart()
 
   if (!payload?.length) {

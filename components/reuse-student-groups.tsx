@@ -99,7 +99,7 @@ export function ReuseStudentGroups({
         .neq("id", currentCourseId)
         .order("created_at", { ascending: false })
 
-      const coursesWithCount = data?.map(course => ({
+      const coursesWithCount = data?.map((course: { id: string; course_name: string; course_code: string; course_enrollments: { count: number }[] }) => ({
         id: course.id,
         course_name: course.course_name,
         course_code: course.course_code,
@@ -131,7 +131,7 @@ export function ReuseStudentGroups({
         .eq("course_id", courseId)
         .order("created_at", { ascending: false })
 
-      const groups = data?.map(group => ({
+      const groups = data?.map((group: any) => ({
         id: group.id,
         name: group.name,
         description: group.description || "",
@@ -167,7 +167,18 @@ export function ReuseStudentGroups({
         `)
         .eq("group_id", groupId)
 
-      const members = data?.map(member => ({
+      interface SupabaseGroupMember {
+        id: string;
+        student_id: string;
+        users: {
+          full_name: string | null;
+          email: string;
+          matric_number: string | null;
+          department: string | null;
+        };
+      }
+
+      const members = data?.map((member: SupabaseGroupMember) => ({
         id: member.id,
         student_id: member.student_id,
         full_name: member.users.full_name || "",
@@ -177,7 +188,7 @@ export function ReuseStudentGroups({
       })) || []
 
       setGroupMembers(members)
-      setSelectedMembers(new Set(members.map(m => m.student_id)))
+      setSelectedMembers(new Set(members.map((m: StudentGroupMember) => m.student_id)))
     } catch (error) {
       console.error("Error fetching group members:", error)
       toast.error("Failed to fetch group members")
@@ -410,7 +421,7 @@ export function ReuseStudentGroups({
                     .eq("course_id", selectedCourseId)
 
                   if (enrollments && enrollments.length > 0) {
-                    const newEnrollments = enrollments.map(enrollment => ({
+                    const newEnrollments = enrollments.map((enrollment: { student_id: string }) => ({
                       course_id: currentCourseId,
                       student_id: enrollment.student_id,
                       approved: true

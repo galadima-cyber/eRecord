@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { DashboardNav } from "@/components/dashboard-nav"
 import { SetLocation } from '@/components/set-location'
-import { useAuth } from "@/lib/auth-context"
+import { useAuth, type UserRole } from "@/lib/auth-context"
 
 export default function LocationManagementPage() {
   const router = useRouter()
@@ -26,7 +26,7 @@ export default function LocationManagementPage() {
 
   return (
     <div className="flex h-screen bg-background">
-      <DashboardNav userRole={userRole || "lecturer"} />
+      <DashboardNav userRole={(userRole as UserRole) || "lecturer"} />
       
       <main className="flex-1 overflow-auto">
         <div className="p-8">

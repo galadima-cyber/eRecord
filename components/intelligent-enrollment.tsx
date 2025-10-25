@@ -165,7 +165,11 @@ export function IntelligentEnrollment({
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="upload" className="flex items-center gap-2">
-            <FileUpload className="w-4 h-4" />
+            <FileUpload 
+  className="w-4 h-4" 
+  onDataExtracted={handleDataExtracted}
+  onUploadProgress={handleUploadProgress}
+/>
             Upload Data
           </TabsTrigger>
           <TabsTrigger value="reuse" className="flex items-center gap-2">

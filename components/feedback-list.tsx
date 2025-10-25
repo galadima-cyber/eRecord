@@ -112,7 +112,7 @@ export function FeedbackList() {
                     <Star
                       key={i}
                       className={`w-4 h-4 ${
-                        i < feedback.rating ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground"
+                        i < (feedback.rating ?? 0) ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground"
                       }`}
                     />
                   ))}

@@ -37,8 +37,19 @@ export default function SessionsPage() {
         .eq("lecturer_id", user?.id)
         .order("session_date", { ascending: false })
 
+      interface Session {
+        id: string
+        course_code: string
+        course_name: string
+        session_date: string
+        start_time: string
+        end_time: string
+        location: string
+        status: string
+      }
+
       setSessions(
-        lecturerSessions?.map((s) => ({
+        lecturerSessions?.map((s: Session) => ({
           id: s.id,
           courseCode: s.course_code,
           courseName: s.course_name,

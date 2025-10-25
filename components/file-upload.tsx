@@ -21,7 +21,7 @@ export interface StudentData {
   errors: string[]
 }
 
-interface FileUploadProps {
+interface FileUploadProps extends React.HTMLAttributes<HTMLDivElement> {
   onDataExtracted: (data: StudentData[]) => void
   onUploadProgress?: (progress: number) => void
   maxFileSize?: number // in MB
@@ -126,7 +126,7 @@ export function FileUpload({
           const workbook = XLSX.read(data, { type: 'array' })
           const sheetName = workbook.SheetNames[0]
           const worksheet = workbook.Sheets[sheetName]
-          const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 })
+          const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 }) as any[][]
 
           if (jsonData.length < 2) {
             reject(new Error("Excel file must contain at least a header row and one data row"))
@@ -147,7 +147,7 @@ export function FileUpload({
             h?.toLowerCase().includes('department') || h?.toLowerCase().includes('dept')
           )
 
-          const students: StudentData[] = jsonData.slice(1).map((row: any[], index: number) => {
+          const students: StudentData[] = jsonData.slice(1).map((row, index) => {
             const email = emailIndex >= 0 ? (row[emailIndex] || "").toString() : ""
             const name = nameIndex >= 0 ? (row[nameIndex] || "").toString() : ""
             const matricNumber = matricIndex >= 0 ? (row[matricIndex] || "").toString() : ""
